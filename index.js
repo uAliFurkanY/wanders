@@ -131,7 +131,7 @@ client.on("message", async (msg) => {
 			channel.send(embed);
 			break;
 		case "invite":
-			message.channel.send(invite);
+			channel.send(invite);
 			break;
 		case "prefix":
 			if (
