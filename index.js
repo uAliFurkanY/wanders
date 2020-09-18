@@ -3,7 +3,6 @@ require("dotenv").config();
 const Discord = require("discord.js");
 const nkv = require("nkv.db");
 const { log, info, error, warn } = require("./logging");
-const dcEscape = require("./escape");
 const minimist = require("minimist");
 const shlex = require("shlex");
 const fs = require("fs");
@@ -85,7 +84,7 @@ client.on("message", async (msg) => {
 	switch (command) {
 		case "help":
 			const embed = new Discord.MessageEmbed()
-				.setTitle("AliFurkan's Test Bot")
+				.setTitle("Wanders")
 				.setColor(0xf78d05)
 				.setDescription(
 					`The prefix is '${guild.prefix}'.
@@ -141,14 +140,11 @@ client.on("message", async (msg) => {
 			) {
 				changeValue("prefix", parsed.arguments[1]);
 
-				channel.send(
-					"Changed the prefix to '" + dcEscape(guild.prefix) + "'."
-				);
-			} else
-				channel.send("The prefix is '" + dcEscape(guild.prefix) + "'.");
+				channel.send("Changed the prefix to '" + guild.prefix + "'.");
+			} else channel.send("The prefix is '" + guild.prefix + "'.");
 			break;
 		case "test":
-			channel.send("```json\n" + dcEscape(formatted) + "\n```");
+			channel.send("```json\n" + formatted + "\n```");
 			break;
 		case "dns":
 			if (
@@ -177,14 +173,15 @@ client.on("message", async (msg) => {
 				return channel.send("Can't convert empty value.");
 			try {
 				channel.send(
-					"`" +
-						dcEscape(
+					new Discord.MessageEmbed()
+						.setTitle("str2hex")
+						.setDescription(
 							Buffer.from(
 								parsed.arguments[1].toString(),
 								"utf8"
 							).toString("hex")
-						) +
-						"`"
+						)
+						.setColor(0x2255ff)
 				);
 			} catch (e) {
 				channel.send("Error: " + e.message);
@@ -195,14 +192,15 @@ client.on("message", async (msg) => {
 				return channel.send("Can't convert empty value.");
 			try {
 				channel.send(
-					"`" +
-						dcEscape(
+					new Discord.MessageEmbed()
+						.setTitle("hex2str")
+						.setDescription(
 							Buffer.from(
 								parsed.arguments[1].toString(),
 								"hex"
 							).toString()
-						) +
-						"`"
+						)
+						.setColor(0x2255ff)
 				);
 			} catch (e) {
 				channel.send("Error: " + e.message);
