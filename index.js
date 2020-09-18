@@ -227,7 +227,7 @@ client.on("message", async (msg) => {
 							parsed.arguments[1]
 								.toString()
 								.split(" ")
-								.map((x) => parseInt(x, 10))
+								.map((x) => x.toString(16))
 								.join(" ")
 						)
 						.setColor(0x2255ff)
