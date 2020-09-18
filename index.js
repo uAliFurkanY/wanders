@@ -128,6 +128,11 @@ client.on("message", async (msg) => {
                         **Usage:** hex2str <hex>`,
 					},
 					{
+						name: "dec2hex",
+						value: `Converts the given array of decimal bytes to a hexadecimal value.
+                        **Usage:** dec2hex <dec>`,
+					},
+					{
 						name: "hex2dec",
 						value: `Converts the given hexadecimal value to an array of decimal bytes.
                         **Usage:** hex2dec <hex>`,
@@ -204,6 +209,26 @@ client.on("message", async (msg) => {
 								parsed.arguments[1].toString(),
 								"hex"
 							).toString()
+						)
+						.setColor(0x2255ff)
+				);
+			} catch (e) {
+				channel.send("Error: " + e.message);
+			}
+			break;
+		case "dec2hex":
+			if (parsed.arguments[1] === undefined)
+				return channel.send("Can't convert empty value.");
+			try {
+				channel.send(
+					new Discord.MessageEmbed()
+						.setTitle("dec2hex")
+						.setDescription(
+							parsed.arguments[1]
+								.toString()
+								.split(" ")
+								.map((x) => parseInt(x, 10))
+								.join(" ")
 						)
 						.setColor(0x2255ff)
 				);
