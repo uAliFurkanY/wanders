@@ -3,6 +3,7 @@ require("dotenv").config();
 const Discord = require("discord.js");
 const nkv = require("nkv.db");
 const { log, info, error, warn } = require("./logging");
+const dcEscape = require("./escape");
 const minimist = require("minimist");
 const shlex = require("shlex");
 const fs = require("fs");
@@ -140,11 +141,14 @@ client.on("message", async (msg) => {
 			) {
 				changeValue("prefix", parsed.arguments[1]);
 
-				channel.send("Changed the prefix to '" + guild.prefix + "'.");
-			} else channel.send("The prefix is '" + guild.prefix + "'.");
+				channel.send(
+					"Changed the prefix to '" + dcEscape(guild.prefix) + "'."
+				);
+			} else
+				channel.send("The prefix is '" + dcEscape(guild.prefix) + "'.");
 			break;
 		case "test":
-			channel.send("```json\n" + formatted + "\n```");
+			channel.send("```json\n" + dcEscape(formatted) + "\n```");
 			break;
 		case "dns":
 			if (
@@ -174,8 +178,11 @@ client.on("message", async (msg) => {
 			try {
 				channel.send(
 					"`" +
-						Buffer.from(parsed.arguments[1], "utf8").toString(
-							"hex"
+						dcEscape(
+							Buffer.from(
+								parsed.arguments[1].toString(),
+								"utf8"
+							).toString("hex")
 						) +
 						"`"
 				);
@@ -189,7 +196,12 @@ client.on("message", async (msg) => {
 			try {
 				channel.send(
 					"`" +
-						Buffer.from(parsed.arguments[1], "hex").toString() +
+						dcEscape(
+							Buffer.from(
+								parsed.arguments[1].toString(),
+								"hex"
+							).toString()
+						) +
 						"`"
 				);
 			} catch (e) {
