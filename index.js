@@ -36,7 +36,7 @@ client.on("ready", () => {
 	id = client.user.id;
 	client.user.setPresence({
 		activity: {
-			name:  "Ping me for help",
+			name: "Ping me for help",
 			type: "WATCHING",
 		},
 	});
@@ -131,7 +131,7 @@ client.on("message", async (msg) => {
 			channel.send(embed);
 			break;
 		case "invite":
-			message.channel.send();
+			message.channel.send(invite);
 			break;
 		case "prefix":
 			if (
