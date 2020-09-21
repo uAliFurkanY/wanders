@@ -1,10 +1,10 @@
 const Discord = require("discord.js");
 module.exports = {
-	name: "name",
-	description: "desc",
-	usage: "name",
+	name: "hex2str",
+	description: "Convert a hex value to a string.",
+	usage: "hex2str <hex>",
 	execute(client, Discord, message, args, gld) {
-		if (parsed.arguments[1] === undefined)
+		if (args.length === 0)
 			return message.channel.send("Can't convert empty value.");
 
 		message.channel.send(
@@ -12,7 +12,7 @@ module.exports = {
 				.setTitle("hex2str")
 				.setDescription(
 					Buffer.from(
-						parsed.arguments[1].toString(),
+						args.join(""),
 						"hex"
 					).toString()
 				)
