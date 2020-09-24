@@ -2,7 +2,6 @@
 require("dotenv").config();
 const Discord = require("discord.js");
 const fs = require("fs");
-const nkv = require("nkv.db");
 const { log, info, error, warn } = require("./logging");
 const shlex = require("shlex");
 const commandFiles = fs
