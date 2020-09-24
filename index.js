@@ -10,7 +10,6 @@ const commandFiles = fs
 
 let id = "";
 let prefix = process.env.PREFIX || "..";
-let operators = (process.env.OPERATORS || "276363003270791168").split(",");
 let ready = false;
 setTimeout(() => (ready ? true : warn("Bot not ready after 5000ms.")), 5000);
 
