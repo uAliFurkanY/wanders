@@ -4,9 +4,7 @@ const Discord = require("discord.js");
 const fs = require("fs");
 const nkv = require("nkv.db");
 const { log, info, error, warn } = require("./logging");
-const dbProxy = require("./dbProxy");
 const shlex = require("shlex");
-const dns = require("dns").promises;
 const commandFiles = fs
 	.readdirSync("./commands")
 	.filter((file) => file.endsWith(".js"));
@@ -14,8 +12,6 @@ const commandFiles = fs
 let id = "";
 let prefix = process.env.PREFIX || "..";
 let operators = (process.env.OPERATORS || "276363003270791168").split(",");
-let guildCache = {};
-/** @param {string} id */ const isOp = (id) => operators.includes(id);
 let ready = false;
 setTimeout(() => (ready ? true : warn("Bot not ready after 5000ms.")), 5000);
 
@@ -36,7 +32,7 @@ client
 		console.error(e);
 		process.exit(1);
 	});
-
+const gd = require("guild-data")(client, { prefix: prefix });
 client.on("ready", () => {
 	ready = true;
 	info("Bot ready.");
@@ -47,56 +43,20 @@ client.on("ready", () => {
 			type: "WATCHING",
 		},
 	});
-	client.guilds.cache.forEach((guild) => {
-		let gld = { prefix: prefix };
-		if (!db.has(guild.id)) {
-			db.set(guild.id, gld);
-		} else {
-			gld = db.get(guild.id);
-		}
-		guildCache[guild.id] = gld;
-	});
 });
 
 client.on("message", async (msg) => {
 	let user = msg.author;
 	let mention = false;
-
-	if (!guildCache[msg.guild.id])
-		guildCache[msg.guild.id] = { prefix: prefix };
-
+	if (!msg.guild) return;
 	if (user.bot) return;
+	const gld = gd(msg.guild.id);
 	if (
-		!msg.content.startsWith(guildCache[msg.guild.id].prefix) &&
+		!msg.content.startsWith(gld.prefix) &&
 		!msg.content.startsWith("<@!" + id + ">")
 	)
 		return;
 	else if (msg.content.startsWith("<@!" + id + ">")) mention = true;
-	if (!msg.guild) return;
-
-	const gld = dbProxy({
-		cache: db.get(msg.guild.id) || this.init(),
-		init() {
-			this.cache = { prefix: prefix };
-			guildCache[msg.guild.id] = this.cache;
-			db.set(msg.guild.id, this.cache);
-			return this.cache;
-		},
-		set(key, value) {
-			this.cache[key] = value;
-			guildCache[msg.guild.id] = this.cache;
-			db.set(msg.guild.id, this.cache);
-		},
-		get(key) {
-			return this.cache[key];
-		},
-		has(key) {
-			return this.cache.hasOwnProperty(key);
-		},
-	});
-	if (!gld) {
-		gld.prefix = prefix;
-	}
 
 	let commandBody;
 	mention
