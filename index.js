@@ -15,7 +15,6 @@ let operators = (process.env.OPERATORS || "276363003270791168").split(",");
 let ready = false;
 setTimeout(() => (ready ? true : warn("Bot not ready after 5000ms.")), 5000);
 
-const db = new nkv.Database("guilds", "database.sqlite");
 const client = new Discord.Client();
 client.commands = new Discord.Collection();
 for (const file of commandFiles) {
