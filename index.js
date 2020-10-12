@@ -13,7 +13,8 @@ let prefix = process.env.PREFIX || "..";
 let ready = false;
 setTimeout(() => (ready ? true : warn("Bot not ready after 5000ms.")), 5000);
 
-const client = new Discord.Client();
+const i = new Discord.Intents(Discord.Intents.ALL).remove("GUILD_MESSAGE_TYPING");
+const client = new Discord.Client({ws: {intents: i}});
 client.commands = new Discord.Collection();
 for (const file of commandFiles) {
 	const command = require(`./commands/${file}`);
