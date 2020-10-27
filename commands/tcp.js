@@ -19,9 +19,6 @@ module.exports = {
 			} catch {}
 			if (hasSocket) {
 				sock.end();
-				message.channel.send(
-					"<@" + message.author.id + ">'s socket has been ended."
-				);
 			} else {
 				message.reply("you don't have an outbound TCP socket.");
 			}
