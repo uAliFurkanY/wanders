@@ -57,7 +57,12 @@ module.exports = {
 				sock.on("data", (buf) => {
 					let str = buf.toString();
 					message.channel.send(
-						str.substr(0, 2000).replace(/@/g, "@")
+						"```\n" +
+							str
+								.replace(/@/g, "\\@")
+								.replace(/```/g, "\\`\\`\\`")
+								.substr(0, 2000 - 7) +
+							"```"
 					);
 				});
 				client.on("message", msgListener);
