@@ -33,15 +33,7 @@ module.exports = {
 			}
 			args[1] = parseInt(args[1]);
 			if (!args[1] || args[1] < 1 || args[1] > 65535) throw "ERR_USAGE";
-			if (
-				!args[0] ||
-				!(
-					net.isIP(args[0]) ||
-					args[0].match(
-						/^((?!-)[A-Za-z0-9-]{1, 63}(?<!-)\\.)+[A-Za-z]{2, 6}$/
-					)
-				)
-			)
+			if (!args[0] || args[0].startsWith("/"))
 				return message.channel.send("Invalid address specified.");
 			try {
 				global.TCPLIST[message.author.id] = net.createConnection(
