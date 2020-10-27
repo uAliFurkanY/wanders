@@ -13,8 +13,10 @@ let prefix = process.env.PREFIX || "..";
 let ready = false;
 setTimeout(() => (ready ? true : warn("Bot not ready after 5000ms.")), 5000);
 
-const i = new Discord.Intents(Discord.Intents.ALL).remove("GUILD_MESSAGE_TYPING");
-const client = new Discord.Client({ws: {intents: i}});
+const i = new Discord.Intents(Discord.Intents.ALL).remove(
+	"GUILD_MESSAGE_TYPING"
+);
+const client = new Discord.Client({ ws: { intents: i } });
 client.commands = new Discord.Collection();
 for (const file of commandFiles) {
 	const command = require(`./commands/${file}`);
@@ -34,6 +36,8 @@ const gd = require("guild-data")(client, { prefix: prefix });
 client.on("ready", () => {
 	ready = true;
 	info("Bot ready.");
+	global.TCPLIST = {};
+	global.LISTENERLIST = {};
 	id = client.user.id;
 	client.user.setPresence({
 		activity: {
@@ -71,7 +75,13 @@ client.on("message", async (msg) => {
 	try {
 		client.commands.get(command).execute(client, msg, args, gld);
 	} catch (e) {
-		error(e);
-		msg.reply("couldn't execute command: `" + e.message + "`!");
+		if (e === "ERR_USAGE")
+			msg.channel.send(
+				"Usage: `" + client.commands.get(command).usage + "`"
+			);
+		else {
+			error(e);
+			msg.reply("couldn't execute command: `" + e.message + "`!");
+		}
 	}
 });

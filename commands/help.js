@@ -3,6 +3,12 @@ module.exports = {
 	name: "help",
 	description: "Displays this.",
 	usage: "help",
+	/**
+	 * @param {Discord.Client} client
+	 * @param {Discord.Message} message
+	 * @param {Array} args
+	 * @param {Object} gld
+	 */
 	execute(client, message, args, gld) {
 		const commands = Array.from(client.commands.entries()).map((x) => x[1]);
 		const embed = new Discord.MessageEmbed()

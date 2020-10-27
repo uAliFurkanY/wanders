@@ -6,25 +6,25 @@ module.exports = {
 	description:
 		"Converts the given array of decimal bytes to a hexadecimal value.",
 	usage: "dec2hex <dec>",
+	/**
+	 * @param {Discord.Client} client
+	 * @param {Discord.Message} message
+	 * @param {Array} args
+	 * @param {Object} gld
+	 */
 	execute(client, message, args, gld) {
-		if (args.length === 0)
-			return message.channel.send("Can't convert empty value.");
-		try {
-			message.channel.send(
-				new Discord.MessageEmbed()
-					.setTitle("dec2hex")
-					.setDescription(
-						args
-							.join(" ")
-							.split(" ")
-							.map((x) => parseInt(x).toString(16))
-							.join("")
-					)
-					.setColor(0x2255ff)
-			);
-		} catch (e) {
-			error(e.message);
-			message.channel.send("Error: " + e.message);
-		}
+		if (args.length === 0) throw "ERR_USAGE";
+		message.channel.send(
+			new Discord.MessageEmbed()
+				.setTitle("dec2hex")
+				.setDescription(
+					args
+						.join(" ")
+						.split(" ")
+						.map((x) => parseInt(x).toString(16))
+						.join("")
+				)
+				.setColor(0x2255ff)
+		);
 	},
 };

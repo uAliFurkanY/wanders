@@ -5,6 +5,12 @@ module.exports = {
 	name: "dns",
 	description: "desc",
 	usage: "dns [-r] address",
+	/**
+	 * @param {Discord.Client} client
+	 * @param {Discord.Message} message
+	 * @param {Array} args
+	 * @param {Object} gld
+	 */
 	execute(client, message, args, gld) {
 		let reverse = args.includes("-r");
 		if (reverse) {
@@ -13,7 +19,7 @@ module.exports = {
 				1
 			);
 		}
-		if (!args[0]) message.channel.send("No address specified.");
+		if (!args[0]) throw "ERR_USAGE";
 		else if (reverse) {
 			dns.reverse(args[0]).then((res) => {
 				const embed = new Discord.MessageEmbed();

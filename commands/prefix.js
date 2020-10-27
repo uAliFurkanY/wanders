@@ -4,6 +4,12 @@ module.exports = {
 	description:
 		"Get/change the prefix of this server. (Mod or Manage Channel permissions to change.)",
 	usage: "prefix [new]",
+	/**
+	 * @param {Discord.Client} client
+	 * @param {Discord.Message} message
+	 * @param {Array} args
+	 * @param {Object} gld
+	 */
 	execute(client, message, args, gld) {
 		if (
 			typeof args[0] === "string" &&
