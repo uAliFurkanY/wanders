@@ -53,21 +53,19 @@ module.exports = {
 						!msg.content.startsWith(gld.prefix)
 					) {
 						try {
-							if (sock.writable) sock.write(msg.content);
+							if (sock.writable)
+								sock.write(msg.content.replace(/\\n/g, "\n"));
 						} catch {}
 					}
 				};
 				global.LISTENERLIST[message.author.id] = msgListener;
 				sock.on("data", (buf) => {
-					let str = buf.toString();
-					message.channel.send(
-						"```\n" +
-							str
-								.replace(/@/g, "\\@")
-								.replace(/```/g, "\\`\\`\\`")
-								.substr(0, 2000 - 7) +
-							"```"
-					);
+					let str = buf
+						.toString()
+						.replace(/@/g, "\\@")
+						.replace(/```/g, "\\`\\`\\`")
+						.substr(0, 2000 - 7);
+					message.channel.send("```\n" + str + "```");
 				});
 				sock.on("end", () => {
 					try {
@@ -78,6 +76,21 @@ module.exports = {
 					} catch {}
 					message.channel.send(
 						"<@" + message.author.id + ">'s socket has been ended."
+					);
+				});
+				sock.on("error", (e) => {
+					try {
+						client.off(
+							"message",
+							global.LISTENERLIST[message.author.id]
+						);
+					} catch {}
+					message.channel.send(
+						"<@" +
+							message.author.id +
+							">'s socket threw an error: `" +
+							e.message +
+							"`"
 					);
 				});
 				client.on("message", msgListener);
