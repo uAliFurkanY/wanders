@@ -56,7 +56,9 @@ module.exports = {
 				global.LISTENERLIST[message.author.id] = msgListener;
 				sock.on("data", (buf) => {
 					let str = buf.toString();
-					message.channel.send(str.substr(0, 2000));
+					message.channel.send(
+						str.substr(0, 2000).replace(/@/g, "@")
+					);
 				});
 				client.on("message", msgListener);
 			} catch (e) {
