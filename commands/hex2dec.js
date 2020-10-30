@@ -11,7 +11,7 @@ module.exports = {
 	 * @param {Array} args
 	 * @param {Object} gld
 	 */
-	execute(client, Discord, message, args, gld) {
+	async execute(client, Discord, message, args, gld) {
 		if (args.length === 0) throw "ERR_USAGE";
 		message.channel.send(
 			new Discord.MessageEmbed()

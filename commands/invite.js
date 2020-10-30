@@ -8,7 +8,7 @@ module.exports = {
 	 * @param {Array} args
 	 * @param {Object} gld
 	 */
-	execute(client, message, args, gld) {
+	async execute(client, message, args, gld) {
 		message.channel.send(process.env.INVITE || "No invite URL set.");
 	},
 };

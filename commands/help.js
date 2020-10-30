@@ -9,7 +9,7 @@ module.exports = {
 	 * @param {Array} args
 	 * @param {Object} gld
 	 */
-	execute(client, message, args, gld) {
+	async execute(client, message, args, gld) {
 		const commands = Array.from(client.commands.entries()).map((x) => x[1]);
 		const embed = new Discord.MessageEmbed()
 			.setTitle("Wanders")

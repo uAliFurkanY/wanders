@@ -10,6 +10,7 @@ const commandFiles = fs
 
 let id = "";
 let prefix = process.env.PREFIX || "..";
+let operators = process.env.OPERATORS.split(",");
 let ready = false;
 setTimeout(() => (ready ? true : warn("Bot not ready after 5000ms.")), 5000);
 
@@ -36,8 +37,6 @@ const gd = require("guild-data")(client, { prefix: prefix });
 client.on("ready", () => {
 	ready = true;
 	info("Bot ready.");
-	global.TCPLIST = {};
-	global.LISTENERLIST = {};
 	id = client.user.id;
 	client.user.setPresence({
 		activity: {
@@ -72,15 +71,20 @@ client.on("message", async (msg) => {
 
 	if (!client.commands.has(command)) return;
 
+	msg.author.operator = operators.includes(msg.author.id);
+
 	try {
-		client.commands.get(command).execute(client, msg, args, gld);
+		await client.commands.get(command).execute(client, msg, args, gld);
 	} catch (e) {
 		if (e === "ERR_USAGE")
 			msg.channel.send(
 				"Usage: `" + client.commands.get(command).usage + "`"
 			);
+		else if (e === "ERR_DISABLED")
+			msg.channel.send("This command is disabled.");
 		else {
 			error(e);
+			console.error(e);
 			msg.reply("couldn't execute command: `" + e.message + "`!");
 		}
 	}

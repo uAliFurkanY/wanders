@@ -1,5 +1,7 @@
 const Discord = require("discord.js");
 const net = require("net");
+const codeify = require("../codeify");
+
 module.exports = {
 	name: "tcp",
 	description: "Creates a TCP connection and bind it to the channel.",
@@ -10,8 +12,8 @@ module.exports = {
 	 * @param {Array} args
 	 * @param {Object} gld
 	 */
-	execute(client, message, args, gld) {
-		let sock = global.TCPLIST[message.author.id];
+	async execute(client, message, args, gld) {
+		/*let sock = global.TCPLIST[message.author.id];
 		let hasSocket = sock && sock.readable && sock.writable;
 		if (args[0] === "end") {
 			try {
@@ -33,7 +35,7 @@ module.exports = {
 			if (!args[0] || args[0].startsWith("/"))
 				return message.channel.send("Invalid address specified.");
 			try {
-				global.TCPLIST[message.author.id] = net.createConnection(
+				global.TCPLIST[message.author.id] = await net.createConnection(
 					{
 						host: args[0],
 						port: args[1],
@@ -56,13 +58,12 @@ module.exports = {
 					}
 				};
 				global.LISTENERLIST[message.author.id] = msgListener;
+				let out = "";
+				let msg = await message.channel.send("Waiting for data...");
 				sock.on("data", (buf) => {
-					let str = buf
-						.toString()
-						.replace(/@/g, "\\@")
-						.replace(/```/g, "\\`\\`\\`")
-						.substr(0, 2000 - 7);
-					message.channel.send("```\n" + str + "```");
+					out += buf.toString();
+					if (msg.editable) msg.edit(codeify(out));
+					else msg.channel.send(codeify(out));
 				});
 				sock.on("end", () => {
 					try {
@@ -94,6 +95,7 @@ module.exports = {
 			} catch (e) {
 				message.channel.send("Can not connect: `" + e.message + "`");
 			}
-		} else throw "ERR_USAGE";
+		} else throw "ERR_USAGE";*/
+		throw "ERR_DISABLED";
 	},
 };

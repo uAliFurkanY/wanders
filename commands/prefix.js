@@ -10,7 +10,7 @@ module.exports = {
 	 * @param {Array} args
 	 * @param {Object} gld
 	 */
-	execute(client, message, args, gld) {
+	async execute(client, message, args, gld) {
 		if (
 			typeof args[0] === "string" &&
 			(message.guild

@@ -11,7 +11,7 @@ module.exports = {
 	 * @param {Array} args
 	 * @param {Object} gld
 	 */
-	execute(client, message, args, gld) {
+	async execute(client, message, args, gld) {
 		let reverse = args.includes("-r");
 		if (reverse) {
 			args.splice(
